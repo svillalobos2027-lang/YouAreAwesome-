@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var messageNumber = 0
     
     var body: some View {
+        
         VStack {
             Text(message)
                 .font(.largeTitle)
@@ -22,6 +23,7 @@ struct ContentView: View {
                 . multilineTextAlignment(.center)
                 . minimumScaleFactor(0.5)
                 .frame(height: 100)
+                .animation(.easeInOut(duration: 0.15), value: message)
 
             
               
@@ -30,24 +32,21 @@ struct ContentView: View {
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .shadow(radius: 30)
-                .animation(<#T##animation: Animation?##Animation?#>, value: <#T##Equatable#>)
-              
+                .animation(.default, value: imageName)
+
             
             Spacer()
             
             Button("Show Message") {
                 let messages = ["You Are Awesome!",
-                                "Gadzooks my friend! I am astonished at how utterly magnificant you are!",
                                 "When the Genius Bar Needs Help, They Call You!",
                                 "You Are Great!",
                                 "You Are Fantastic!",
                                 "Fabulous? That's You!",
                                 "You Make Me Smile!"]
-                message = messages[messageNumber]
-                messageNumber = messageNumber + 1
-                if messageNumber == messages.count {
-                    messageNumber = 0
-                }
+                message = messages[Int.random(in: 0...messages.count-1)]
+                imageName = "image\(Int.random(in: 0...9))"
+               
               //TODO: - Update the imageName Variable -
                 imageName = "image\(imageNumber)"
 
