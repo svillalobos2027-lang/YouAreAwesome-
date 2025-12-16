@@ -44,8 +44,18 @@ struct ContentView: View {
             Spacer()
             
             HStack {
-                Toggle("Sound On: ", isOn: $soundIsOn)
+                Text("Sound On:")
+                Toggle("", isOn: $soundIsOn)
+                    .labelsHidden()
+                    .onChange(of: soundIsOn) {
+                        if audioPlayer != nil  && audioPlayer.isPlaying {
+                                audioPlayer.stop()
+                            
+                        }
+                    }
+                   
                 
+                Spacer()
                 
                 
                 Button("Show Message") {
@@ -73,7 +83,9 @@ struct ContentView: View {
                     
                     
                     lastSoundNumber = nonRepeatingRandom(lastNumber: lastSoundNumber, upperBound: numberOfSounds-1)
-                    playSound(soundName: "sound\(lastSoundNumber)")
+                    if  soundIsOn{
+                        playSound(soundName: "sound\(lastSoundNumber)")
+                    }
                     
                 }
                 .buttonStyle(.borderedProminent)
@@ -99,6 +111,9 @@ struct ContentView: View {
     
     
     func playSound(soundName: String) {
+        if audioPlayer != nil  && audioPlayer.isPlaying {
+                audioPlayer.stop()
+        }
         guard let soundFile = NSDataAsset(name: soundName) else{
             print("😡 Could not read file named \(soundName)")
             return
